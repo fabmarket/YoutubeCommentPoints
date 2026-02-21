@@ -1,5 +1,7 @@
 {
-    "channelUrl": "",
-    "checkIntervalHours": 6,
-    "pointsPerComment": 30
+  "channelUrl": "https://www.youtube.com/@schvilo",
+  "checkIntervalHours": 6,
+  "pointsPerComment": 30,
+  "repoOwner": "fabmarket",
+  "repoName": "YoutubeCommentPoints"
 }
