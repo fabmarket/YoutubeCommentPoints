@@ -94,6 +94,8 @@
                 <button class="btn btn-primary" id="manual-check-btn">🔍 Yorumları Şimdi Kontrol Et</button>
                 <button class="btn btn-secondary" id="start-scheduler-btn">▶ Otomatik Başlat</button>
                 <button class="btn btn-danger hidden" id="stop-scheduler-btn">⏹ Otomatik Durdur</button>
+                <button class="btn btn-secondary" id="rebuild-history-btn"
+                    title="Eski yorumların metinlerini geçmişe ekler, puan değişmez">📜 Yorum Geçmişini Yenile</button>
             </div>
             <div class="scheduler-status" id="scheduler-status"><span class="dot-inactive">●</span> Otomatik kontrol
                 kapalı</div>
@@ -513,6 +515,95 @@
             return String(str)
                 .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        // =============================================
+        //  REBUILD COMMENT HISTORY (no points change)
+        // =============================================
+        document.getElementById('rebuild-history-btn').addEventListener('click', rebuildCommentHistory);
+
+        async function rebuildCommentHistory() {
+            const btn = document.getElementById('rebuild-history-btn');
+            const owner = localStorage.getItem(LS.OWNER) || '';
+            const repo = localStorage.getItem(LS.REPO) || '';
+            const key = localStorage.getItem(LS.YT_KEY) || '';
+            const pat = localStorage.getItem(LS.PAT) || '';
+            const channel = localStorage.getItem(LS.CHANNEL) || '';
+
+            if (!key || !pat || !owner || !repo || !channel) {
+                log('❌ Önce ayarları doldurup kaydedin.', 'error'); return;
+            }
+
+            btn.disabled = true;
+            progress(5);
+            log('📜 Yorum geçmişi yenileniyor (puan değişmez)…', 'info');
+
+            try {
+                // Load current scores
+                const scoresRes = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/data/scores.json?t=${Date.now()}`, { mode: 'cors' });
+                let scores = scoresRes.ok ? await scoresRes.json() : { lastUpdated: '', processedCommentIds: [], users: {} };
+                progress(15);
+
+                // Clear comment arrays for all users
+                for (const uid in scores.users) {
+                    scores.users[uid].comments = [];
+                }
+
+                // Fetch ALL comments — pass empty set so nothing is skipped
+                log('Tüm yorumlar çekiliyor (işlenmiş dahil)…');
+                const channelId = await resolveChannelId(channel, key);
+                const uploadsId = await getUploadsPlaylistId(channelId, key);
+                const videoIds = await getAllVideoIds(uploadsId, key, m => log(m));
+                log(`${videoIds.length} video bulundu.`);
+                progress(35);
+
+                const emptySet = new Set(); // skip no comments
+                let totalFetched = 0;
+                for (let i = 0; i < videoIds.length; i++) {
+                    progress(35 + Math.round((i / videoIds.length) * 50));
+                    try {
+                        const comments = await getVideoComments(videoIds[i], key, emptySet);
+                        // For each comment, add text to matching user
+                        for (const c of comments) {
+                            const uid = c.authorChannelId || c.authorDisplayName;
+                            if (scores.users[uid] && c.textDisplay) {
+                                const u = scores.users[uid];
+                                u.comments = u.comments || [];
+                                // avoid duplicates
+                                if (!u.comments.find(x => x.id === c.id)) {
+                                    u.comments.push({
+                                        id: c.id,
+                                        text: c.textDisplay,
+                                        videoId: c.videoId || '',
+                                        date: c.publishedAt || '',
+                                    });
+                                    totalFetched++;
+                                }
+                            }
+                        }
+                    } catch (e) { log(`⚠ Video ${i + 1}: ${e.message}`, 'warn'); }
+                }
+
+                // Sort each user's comments by date desc
+                for (const uid in scores.users) {
+                    const u = scores.users[uid];
+                    if (u.comments && u.comments.length > 1) {
+                        u.comments.sort((a, b) => new Date(b.date) - new Date(a.date));
+                        u.comments = u.comments.slice(0, 50);
+                    }
+                }
+
+                log(`${totalFetched} yorum metni kullanıcılara atandı.`);
+                progress(90);
+
+                await saveScoresToGitHub(scores, owner, repo, pat, m => log(m));
+                progress(100);
+                log('✅ Yorum geçmişi başarıyla güncellendi!', 'success');
+            } catch (e) {
+                log(`❌ Hata: ${e.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+            }
         }
     </script>
 

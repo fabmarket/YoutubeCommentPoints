@@ -164,7 +164,7 @@ function renderLeaderboard(scores, container, lastUpdateEl, statCommentEl, statU
         entry.title = 'Profili gör';
 
         const rankClass = rank === 1 ? 'gold' : rank === 2 ? 'silver' : rank === 3 ? 'bronze' : '';
-        const rankLabel = rank === 1 ? '🌟' : rank === 2 ? '🌙' : rank === 3 ? '🍂' : rank;
+        const rankLabel = rank === 1 ? '👑' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
 
         const avatarHtml = user.avatar
             ? `<img class="user-avatar" src="${escHtml(user.avatar)}" alt="${escHtml(user.name)}" loading="lazy" onerror="this.outerHTML='<div class=\\'avatar-placeholder\\'>${escHtml(user.name.charAt(0))}</div>'">`
