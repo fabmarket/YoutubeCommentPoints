@@ -5,10 +5,26 @@
 
 const SCORES_PATH = 'data/scores.json';
 
+/**
+ * Safe UTF-8 aware base64 encoding using TextEncoder.
+ * Replaces btoa(unescape(encodeURIComponent())) which can fail on
+ * certain Unicode characters (e.g. emoji in YouTube usernames).
+ */
+function toBase64Utf8(str) {
+    const bytes = new TextEncoder().encode(str);
+    let binary = '';
+    // Process in chunks to avoid call-stack limits on large strings
+    const chunkSize = 8192;
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+    }
+    return btoa(binary);
+}
+
 /** Load scores from the repo via raw GitHub content URL */
 async function loadScores(repoOwner, repoName) {
     const url = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${SCORES_PATH}?t=${Date.now()}`;
-    const res = await fetch(url);
+    const res = await fetch(url, { mode: 'cors' });
     if (!res.ok) return { lastUpdated: '', processedCommentIds: [], users: {} };
     return await res.json();
 }
@@ -33,7 +49,6 @@ function applyComments(scores, newComments, pointsPerComment) {
         }
         scores.users[uid].points += pointsPerComment;
         scores.users[uid].commentCount += 1;
-        // Update name/avatar in case they changed
         scores.users[uid].name = comment.authorDisplayName;
         if (comment.authorProfileImageUrl) {
             scores.users[uid].avatar = comment.authorProfileImageUrl;
@@ -48,7 +63,6 @@ function applyComments(scores, newComments, pointsPerComment) {
 
 /**
  * Save scores.json back to GitHub via Contents API (requires PAT).
- * Fetches the current file SHA first (needed for PUT).
  */
 async function saveScoresToGitHub(scores, repoOwner, repoName, pat, onProgress) {
     const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${SCORES_PATH}`;
@@ -59,18 +73,30 @@ async function saveScoresToGitHub(scores, repoOwner, repoName, pat, onProgress) 
         'Content-Type': 'application/json',
     };
 
-    // Get current SHA
+    // Get current SHA (needed for updating existing file)
     onProgress('GitHub\'dan mevcut sha alınıyor…');
     let sha = null;
     try {
-        const getRes = await fetch(apiUrl, { headers });
+        const getRes = await fetch(apiUrl, { method: 'GET', headers, mode: 'cors' });
         if (getRes.ok) {
             const getData = await getRes.json();
             sha = getData.sha;
+            onProgress(`SHA alındı: ${sha.slice(0, 7)}…`);
+        } else {
+            onProgress(`SHA alınamadı (HTTP ${getRes.status}) — yeni dosya olarak kaydedilecek.`);
         }
-    } catch (e) { /* file may not exist yet */ }
+    } catch (e) {
+        onProgress(`SHA isteği başarısız: ${e.message} — yeni dosya olarak denenecek.`);
+    }
 
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(scores, null, 2))));
+    // Encode content safely (handles emoji, Turkish chars, etc.)
+    let content;
+    try {
+        content = toBase64Utf8(JSON.stringify(scores, null, 2));
+    } catch (encErr) {
+        throw new Error(`İçerik kodlama hatası: ${encErr.message}`);
+    }
+
     const body = {
         message: `chore: update scores [${new Date().toISOString()}]`,
         content,
@@ -78,16 +104,32 @@ async function saveScoresToGitHub(scores, repoOwner, repoName, pat, onProgress) 
     };
 
     onProgress('scores.json GitHub\'a yükleniyor…');
-    const putRes = await fetch(apiUrl, {
-        method: 'PUT',
-        headers,
-        body: JSON.stringify(body),
-    });
+    let putRes;
+    try {
+        putRes = await fetch(apiUrl, {
+            method: 'PUT',
+            mode: 'cors',
+            headers,
+            body: JSON.stringify(body),
+        });
+    } catch (netErr) {
+        // Network-level failure — diagnose
+        throw new Error(
+            `Ağ hatası (GitHub API erişilemiyor): ${netErr.message}. ` +
+            `Lütfen şunları kontrol edin: 1) PAT geçerli mi? 2) Repo adı doğru mu (${repoOwner}/${repoName})? ` +
+            `3) Tarayıcı uzantısı (reklam engelleyici) API'yi engelliyor olabilir.`
+        );
+    }
 
     if (!putRes.ok) {
-        const err = await putRes.json();
-        throw new Error(`GitHub kaydetme hatası: ${err.message}`);
+        let errMsg = `HTTP ${putRes.status}`;
+        try {
+            const errBody = await putRes.json();
+            errMsg += `: ${errBody.message}`;
+        } catch (_) { }
+        throw new Error(`GitHub kaydetme hatası: ${errMsg}`);
     }
+
     onProgress('✅ scores.json başarıyla güncellendi!');
 }
 
