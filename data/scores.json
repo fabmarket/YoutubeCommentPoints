@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T17:46:32.512Z",
+  "lastUpdated": "2026-02-21T19:01:46.781Z",
   "processedCommentIds": [
     "Ugxxv3beo9Ean1uw-IF4AaABAg",
     "Ugzuz905V9aXUplWroJ4AaABAg",
@@ -75,7 +75,11 @@
     "UgzFEbXxjSUwefhZWVh4AaABAg",
     "UgxTBuZVglNcPgQRX0J4AaABAg",
     "UgzNcshG_UXWpUMXzYx4AaABAg",
-    "UgwN9x4oRKdHWQjwIat4AaABAg"
+    "UgwN9x4oRKdHWQjwIat4AaABAg",
+    "UgyvH0orLe1AetGWuDR4AaABAg",
+    "UgwuClMbMsorntY6_e14AaABAg",
+    "UgzBV_haCXHAC2TAq694AaABAg",
+    "UgyxfaTvibLsryYfRxN4AaABAg"
   ],
   "users": {
     "UCyqH6HVfeZtIZO2B0IwAPPA": {
@@ -421,9 +425,33 @@
     "UCfqeRcGGLEgu_3ajsPnEG_w": {
       "name": "@Cutemoovy",
       "avatar": "https://yt3.ggpht.com/ytc/AIdro_mFwh2IrAgSRZ0bfsBI6zmAunMhdQdLYWio4gGzQHiQAgS8RJeBxykBSv3CKlCmqo2Z-A=s48-c-k-c0x00ffffff-no-rj",
-      "points": 60,
-      "commentCount": 2,
+      "points": 180,
+      "commentCount": 6,
       "comments": [
+        {
+          "id": "UgyxfaTvibLsryYfRxN4AaABAg",
+          "text": "Muhteşem bir video, emeğinize sağlık youtubeun gizemli videolarından",
+          "videoId": "aorOdBWNGIk",
+          "date": "2026-02-21T17:21:45Z"
+        },
+        {
+          "id": "UgzBV_haCXHAC2TAq694AaABAg",
+          "text": "İstanbul&#39;da kirası 20bin :9",
+          "videoId": "JG2echXYgTA",
+          "date": "2026-02-21T17:21:09Z"
+        },
+        {
+          "id": "UgwuClMbMsorntY6_e14AaABAg",
+          "text": "Yine canım çekti bir tur daha izledim :)",
+          "videoId": "IAFAxA0kDeI",
+          "date": "2026-02-21T17:20:30Z"
+        },
+        {
+          "id": "UgyvH0orLe1AetGWuDR4AaABAg",
+          "text": "Elinize, emeğinize sağlık çok hoş",
+          "videoId": "87krjxeSF5I",
+          "date": "2026-02-21T17:19:42Z"
+        },
         {
           "id": "Ugx_TqEH6CfV_TlPWzx4AaABAg",
           "text": "yine çok tatlı bir çizim olmuş elinize sağlık",
