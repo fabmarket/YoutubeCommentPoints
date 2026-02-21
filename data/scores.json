@@ -1,5 +1,279 @@
 {
-  "lastUpdated": "",
-  "processedCommentIds": [],
-  "users": {}
+  "lastUpdated": "2026-02-21T01:10:31.012Z",
+  "processedCommentIds": [
+    "Ugxxv3beo9Ean1uw-IF4AaABAg",
+    "Ugzuz905V9aXUplWroJ4AaABAg",
+    "UgxYhWbzXNGETntumGZ4AaABAg",
+    "UgzSAw_Gk7Cdx1t-tll4AaABAg",
+    "UgzHcHvEobW9CE_DNnh4AaABAg",
+    "UgyKdtqnQUTx14_nJbV4AaABAg",
+    "UgzdSEGRWERwJedYz994AaABAg",
+    "UgwA6zkbLKzvbxWJbQh4AaABAg",
+    "UgwW2eua-6QEXQSnnQt4AaABAg",
+    "UgwqqSkO6Ls_mXN3IRB4AaABAg",
+    "UgxJ0uh5BaYRvRgp1694AaABAg",
+    "UgzuC6K6uCT80OiIe9t4AaABAg",
+    "Ugx9rdp7e_PJiUbsmOd4AaABAg",
+    "UgwZK-QdhE-yjhkU47N4AaABAg",
+    "UgyV5TDTCsCrYkx0ivx4AaABAg",
+    "Ugx_TqEH6CfV_TlPWzx4AaABAg",
+    "Ugz7SGBA3vzhicQXvex4AaABAg",
+    "Ugwa-6eN3Wpz1SUpaax4AaABAg",
+    "UgzRLfA3UHm7LEuVj_t4AaABAg",
+    "UgyIDJAVKw5VW2Rg-qV4AaABAg",
+    "Ugxw-7EGe4iW03u8z6h4AaABAg",
+    "UgyienYW8IDBW6MZPhR4AaABAg",
+    "Ugwtmb6H-rcY_BTuPUB4AaABAg",
+    "UgyV8sz4BR55gQJcvil4AaABAg",
+    "UgxoxtgrGxzaXj-sneR4AaABAg",
+    "UgyN_vDiHh-IobhhpNd4AaABAg",
+    "Ugw2O6SkRG733kQD-5J4AaABAg",
+    "UgwTq7aVCbtPreIpDtt4AaABAg",
+    "Ugw0xXaOFaGP8Qr-VY94AaABAg",
+    "UgyKJdWfoVVUQ70puxd4AaABAg",
+    "UgzAz3Vtgg3-_JOhsSV4AaABAg",
+    "UgyRon8PMK1bBV4b6gh4AaABAg",
+    "UgzMBk2_A8G-Nirs4zx4AaABAg",
+    "UgwfsHF6kknkNbI4IlZ4AaABAg",
+    "Ugw-LPIh0yCiGBIMu654AaABAg",
+    "UgznXjIy83RYQ3FsDPp4AaABAg",
+    "Ugw-wx2b1-yjTRM7EMV4AaABAg",
+    "UgwQqPULyVYCot3cnMd4AaABAg",
+    "Ugy18MwP9mZ4m1Bhl5N4AaABAg",
+    "Ugwg-hWBL01xz-64SSp4AaABAg",
+    "UgxKJaQ-7lPlEIuX02Z4AaABAg",
+    "UgwA-_JSpiWLLdO7DV54AaABAg",
+    "Ugy_mnNuBN7XZjLpnJR4AaABAg",
+    "UgyKIDH3M_QLZihJKm94AaABAg",
+    "Ugypd1i5SxsoVzw44CR4AaABAg",
+    "Ugy5mv3k6bcbWe2A6Dx4AaABAg",
+    "Ugy4Gt2Y_uRxXHHoZbd4AaABAg",
+    "Ugyb86CQE_1kemFg6PV4AaABAg",
+    "UgwyAPZ1G1fASGePeNx4AaABAg",
+    "UgwZcEPT-CU9_BQz8G54AaABAg",
+    "Ugy7uYaAV7hh-ZppC3d4AaABAg",
+    "UgwZep_aThTO_D_HuPl4AaABAg",
+    "UgzijNbPq1VB5xrvCAd4AaABAg",
+    "Ugy49Q52Q2TpaqYirGV4AaABAg",
+    "Ugxb8d8yHKXLiw418Xp4AaABAg",
+    "UgzyaPbmmVVHUbQhGtZ4AaABAg",
+    "Ugw0tofKOVcccbmtuSp4AaABAg",
+    "UgylbilFkXGyWUj9QFZ4AaABAg",
+    "Ugz4ZDRQagcvW3uFZU54AaABAg",
+    "UgwA0bTPlJjiDT-_p794AaABAg",
+    "UgzMDwNE9u-uPsjMIrR4AaABAg",
+    "UgwdS-RvgIY2qFrFujB4AaABAg",
+    "UgzAgbFVRYJE4mhEwdp4AaABAg",
+    "UgyubkAl6ztcnESnWTV4AaABAg",
+    "Ugz72loa--CgxgEIZVN4AaABAg",
+    "UgyWtTu6keFhHjzo0dN4AaABAg",
+    "Ugw05uPLuBwrrw71Vux4AaABAg",
+    "Ugzp3BUz7HZmPe7hDXN4AaABAg",
+    "Ugwgp5nw9Y3io_lv0wt4AaABAg",
+    "UgzyfTQFV9dCHRz5bbF4AaABAg",
+    "UgwScTTyhfOPdtRxSIJ4AaABAg",
+    "UgzFEbXxjSUwefhZWVh4AaABAg",
+    "UgxTBuZVglNcPgQRX0J4AaABAg",
+    "UgzNcshG_UXWpUMXzYx4AaABAg"
+  ],
+  "users": {
+    "UCyqH6HVfeZtIZO2B0IwAPPA": {
+      "name": "@Pixiedixielupsie",
+      "avatar": "https://yt3.ggpht.com/5mOu8kmFsnmAgHm87nfUSPeriV0NDBIN8Jy5nF2-c0XMsxptOJ4QLO_mAbw8hNPHUSZZRSBwOg=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCcnQLYhen0Q9j9OrhKk_Gag": {
+      "name": "@Helenmidedin",
+      "avatar": "https://yt3.ggpht.com/Vh4QAAFhmpiTAORl5WxJo96f-lhi6-5X_4sNR-_-5YbybvovCS3W-PGH7zDnhGbiOS0KSscAtw=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCyFODfSlMRY4lpykW-pzFow": {
+      "name": "@Koda-carib787",
+      "avatar": "https://yt3.ggpht.com/JNAwTQG6BevhMFGW-d5zAMhXetP6jBsmY_vOImezNCs_r3KT169iUGoblgkN1Frx2FvcaSeHkA=s48-c-k-c0x00ffffff-no-rj",
+      "points": 120,
+      "commentCount": 4
+    },
+    "UCJMPwa-QAjZyAccU9wFCRuA": {
+      "name": "@emrepalamut7039",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_kBfNroK0whH76vP3JqBlVz0G9KH5WcV-BGkewvapy_FlA=s48-c-k-c0x00ffffff-no-rj",
+      "points": 60,
+      "commentCount": 2
+    },
+    "UCeyAu3-aKqI4qML3XYcpgvw": {
+      "name": "@HerrErkanSama",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_kfBWzgfHn_NOhyxXs3rKlvQuHZKqfA1ZMrxZMUGQkjW8Dqu0CswMyWj8F3pmGfexqucg=s48-c-k-c0x00ffffff-no-rj",
+      "points": 180,
+      "commentCount": 6
+    },
+    "UCpajxKIG058TyKOh1zRNHSw": {
+      "name": "@Rk_aman_100k",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_kNn6ML5JlhLrSoExrtw_OWTxjwv-pPPh8GhTrE49w-bzrwzJrjG1FoMdgRo3BUt4v3Gw=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UC9HL9Ki7LFtv4FzNJ7KUgLw": {
+      "name": "@Gandalf7391",
+      "avatar": "https://yt3.ggpht.com/wExWCXZ6czZiaFvy6KUizU4IWgbP5tIsnTfO19tPapuqakXsTM-DAfY0GtPL5Gp6eyBFiPAT8Cc=s48-c-k-c0x00ffffff-no-rj",
+      "points": 210,
+      "commentCount": 7
+    },
+    "UCtPxhcmfZtsSzfsOsxMmsXg": {
+      "name": "@yasingunaydnn",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_kFbvor44uXA2vyCS5XSc-9oASHqI3WNUnT429YJOB5bcA=s48-c-k-c0x00ffffff-no-rj",
+      "points": 210,
+      "commentCount": 7
+    },
+    "UCuN-D3kqDOFX7cb4cUEDEpg": {
+      "name": "@coopershepherd9",
+      "avatar": "https://yt3.ggpht.com/9UoSo3Ui5C6TSEbD6zEkQwCGGoN7HstOUF9onJm0BwLEcQOiD1Ws2nvLFpPVCIz6gLAwAq6Q=s48-c-k-c0x00ffffff-no-rj",
+      "points": 120,
+      "commentCount": 4
+    },
+    "UC2L7kdGz_hGzoR65deYIkIQ": {
+      "name": "@luxenlory3566",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_nWJSeIiKS4l-2Zr_oRHCL22uwCFXWKpRo0MkUEgZI=s48-c-k-c0x00ffffff-no-rj",
+      "points": 60,
+      "commentCount": 2
+    },
+    "UCdJeuv5esCLfQnUVkoL9iWg": {
+      "name": "@Biyiklikedy",
+      "avatar": "https://yt3.ggpht.com/omCHy1cc_O631mktADW4sS-a7UMcdvUXg7rfFptGq_55_rb73F7ZbOrG7XFpshBltPrIZnRkMA=s48-c-k-c0x00ffffff-no-rj",
+      "points": 210,
+      "commentCount": 7
+    },
+    "UCuU9RBNowtGIFFB3etCTnaA": {
+      "name": "@SelinErdoğan-j5j",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_mA5iYFWQWr-erQfOrpRSPi7uAL1ykOBKRSbPBDp88Z1xyBT7Je5IKp6_AckwgwsDEc-Q=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCfqeRcGGLEgu_3ajsPnEG_w": {
+      "name": "@Cutemoovy",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_mFwh2IrAgSRZ0bfsBI6zmAunMhdQdLYWio4gGzQHiQAgS8RJeBxykBSv3CKlCmqo2Z-A=s48-c-k-c0x00ffffff-no-rj",
+      "points": 60,
+      "commentCount": 2
+    },
+    "UCNeS_N9lp5YWT7DBJ7b63gA": {
+      "name": "@kaancetinkaya4",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_lF8ILVJ3tryD5S68ZyO5biVaPnkRELjadR_o_QtGKO1P0=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UChQLBT8TKPVYdI7CUc03asw": {
+      "name": "@Ardelinatr",
+      "avatar": "https://yt3.ggpht.com/WzJfFOTaG0lElkGOWSakEXsWJEfVM6ben8XBDSRJBk2SQI_yFfadufF8zMcb0GtfTrVfn-AHWQ=s48-c-k-c0x00ffffff-no-rj",
+      "points": 150,
+      "commentCount": 5
+    },
+    "UCiRHxHoLKJ3mQ_hVdVrvLzQ": {
+      "name": "@PioneerVonWonderlands",
+      "avatar": "https://yt3.ggpht.com/vV14G6KlBNfsTS8cxQJKfPaSSeUS_mYVGuHXDw6KoqY0cOg4NzDJq3RVK2zs-WR_8cEp32xACg=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UC-j0bjemqT85a7gbONn_7DA": {
+      "name": "@Life0Craft",
+      "avatar": "https://yt3.ggpht.com/3gKPeQyYS_SaAvfSQVfpCEiXrnMblfrlAqNCEg1y9NWwpdYv5-z7bI7omPHqwPAxGEqtrZPVgw=s48-c-k-c0x00ffffff-no-rj",
+      "points": 60,
+      "commentCount": 2
+    },
+    "UCfojaebZ24GcN6_w2FX2Wiw": {
+      "name": "@mountainsareflat",
+      "avatar": "https://yt3.ggpht.com/fATOcmPBcV3GD88Iv71i621kCBlFhrMkkKrFnctMj_2sEVvgBttIUYRAikD-2KJDqHY2nOfj=s48-c-k-c0x00ffffff-no-rj",
+      "points": 90,
+      "commentCount": 3
+    },
+    "UC41YovYdC-ht5cYPck-NP2w": {
+      "name": "@alive.creature-j4p",
+      "avatar": "https://yt3.ggpht.com/mwRgVlbZGxo0WPBw9to_zUgjGI5aL9QMtvgD4Jy2yZIPRXPFgpqZzzNA_OD-SQ65BSFxTSJP=s48-c-k-c0x00ffffff-no-rj",
+      "points": 60,
+      "commentCount": 2
+    },
+    "UCxV7oKkJxnYIBHSInU1c9wg": {
+      "name": "@zarifkarma6111",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_kifOJSym6SD_f4Kc1DRR76wKfaDm94uE1Iei3Hf02U5Q=s48-c-k-c0x00ffffff-no-rj",
+      "points": 60,
+      "commentCount": 2
+    },
+    "UC4jrbKWK2buYxDX6Extfn7A": {
+      "name": "@ZyranBitezPeople",
+      "avatar": "https://yt3.ggpht.com/AQrrR3sGo7-zLV9RB8vbVA7v8YpbW8rO0micWmmsnjdRbZSqutKhJP08O2Zq17T_SGqGP8IbWw=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCdwMJ0VPV4rIpMQpA1bhhtg": {
+      "name": "@arenboi",
+      "avatar": "https://yt3.ggpht.com/dkxqz9n4QeBvcqvJLwa_vx_Xw3x2-nBAacvrDna9AeryAQVetAedHSHzafVMI86KNKVbtr9cj6A=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UC1uANoVq4wXaGzN7CYNSlWg": {
+      "name": "@v4t0z",
+      "avatar": "https://yt3.ggpht.com/_NgIlXRzGZjj0ZK3SCWYtEo2uAwgPE94_CQwUYZTmgOtZtOizn4rwyV6K7Em96Q8wCMqDy9gxA=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCHUM-Hc5c4yhwm5zW5EgUyQ": {
+      "name": "@anlsaygn7983",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_m2jNP5mMWTsPPkw9ms57PC_YDrvqxZ3BewOHZsHDU=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCjzzM-MCPgO0ys9y903sQVw": {
+      "name": "@huseyinpatat839",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_kf5P3_pjSDIHXsnoq1jr0hU3F-YYH33fDX5P0Sn3D9mlo=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCGgl8SI02s4COuNJq4pnfIw": {
+      "name": "@BB-wo7vn",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_mbqY3Gwh4XrmOsjN1XFxe7Pm7yUzx7Qu7wKRJXlQM=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCMKKZ599RQVetY6Frv1S1bA": {
+      "name": "@sevatk590",
+      "avatar": "https://yt3.ggpht.com/Xu1iZAqU_3WvzCxjgTfAWaFfUO16HqROV8GoTiqj5ACYG7Go85syU6TsgASD9opBMC5u4ACe=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCVnhP_HHAE61HFLOv5K9Yog": {
+      "name": "@cmrdnr",
+      "avatar": "https://yt3.ggpht.com/36Lwn9RSVljbYVnmN6L6oohTwgQ4dcmlj2jlbMDPuB4dBx3NaXA_HRCjf0uu6ENxHVSOXyH4=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCgR0Na8WIYgppoFn0TBG23w": {
+      "name": "@gamzegenc9474",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_nAcKUQSaPwa8qmn8_IQde26h7FWb91wenu09_bPwo=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCLVX-IkQFgUwfjcdP5_L6Vw": {
+      "name": "@minayasar8358",
+      "avatar": "https://yt3.ggpht.com/StHCT6afelBz_0lkc55SOSDRd51R0smm3Zowgo616_BEIU6wgxVKdBdDuIl9KW7f27ZCWyR5Hg=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCSNh6DJ088aGUO5mDMhJxdQ": {
+      "name": "@oculusreparo6665",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_l0H88E-cZn7W-3AfDioTpTZHjzDByZAQMLaPGwvdFH6g=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UC3yb8YcOBRV0aqdhewM-3NA": {
+      "name": "@orcunturk5340",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_kQ-nz4sOO8duDWk2C593lIzY-GLHVsU2TourXgkuCTs3I=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    },
+    "UCkEYRtXjQxt4bhmVVrVjz6g": {
+      "name": "@burakbilbay4425",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_mxyr1mr7YG6aj6lRDkkC3TOAXj-zzZIclJMxJ3lNedbmw3=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1
+    }
+  }
 }
