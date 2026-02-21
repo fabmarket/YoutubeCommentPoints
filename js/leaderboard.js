@@ -12,39 +12,31 @@ async function initLeaderboard() {
     const statCommentEl = document.getElementById('stat-comments');
     const statUsersEl = document.getElementById('stat-users');
 
-    // Try cache first for instant render
-    const cachedRaw = localStorage.getItem(LS_SCORES_CACHE);
-    const cachedTime = parseInt(localStorage.getItem(LS_CACHE_TIME) || '0', 10);
-    const now = Date.now();
+    // Clear stale cache so we don't serve old empty data
+    localStorage.removeItem(LS_SCORES_CACHE);
+    localStorage.removeItem(LS_CACHE_TIME);
 
-    if (cachedRaw && (now - cachedTime) < CACHE_TTL_MS) {
-        renderLeaderboard(JSON.parse(cachedRaw), container, lastUpdateEl, statCommentEl, statUsersEl);
-    } else {
-        showLoading(container);
-    }
+    showLoading(container);
 
-    // Always fetch fresh from GitHub
+    // Always fetch fresh
     try {
         const cfg = await loadConfig();
-        const scores = await fetchScoresFromGitHub(cfg);
+        const scores = await fetchScores(cfg);
 
         // Cache it
         localStorage.setItem(LS_SCORES_CACHE, JSON.stringify(scores));
-        localStorage.setItem(LS_CACHE_TIME, now.toString());
+        localStorage.setItem(LS_CACHE_TIME, Date.now().toString());
 
         renderLeaderboard(scores, container, lastUpdateEl, statCommentEl, statUsersEl);
     } catch (e) {
-        if (!cachedRaw) {
-            showError(container, e.message);
-        }
-        // else keep cached data shown
+        showError(container, e.message);
     }
 
     // Auto-refresh every 5 minutes
     setInterval(async () => {
         try {
             const cfg = await loadConfig();
-            const scores = await fetchScoresFromGitHub(cfg);
+            const scores = await fetchScores(cfg);
             localStorage.setItem(LS_SCORES_CACHE, JSON.stringify(scores));
             localStorage.setItem(LS_CACHE_TIME, Date.now().toString());
             renderLeaderboard(scores, container, lastUpdateEl, statCommentEl, statUsersEl);
@@ -57,17 +49,33 @@ async function loadConfig() {
     return res.ok ? res.json() : {};
 }
 
-async function fetchScoresFromGitHub(cfg) {
+/**
+ * Fetch scores — tries same-origin relative path first (GitHub Pages, always
+ * up-to-date), then raw.githubusercontent.com as fallback.
+ */
+async function fetchScores(cfg) {
+    // 1) Same-origin relative path — always fresh when hosted on GitHub Pages
+    try {
+        const res = await fetch(`data/scores.json?t=${Date.now()}`);
+        if (res.ok) {
+            const data = await res.json();
+            if (data && Object.keys(data.users || {}).length > 0) return data;
+            // If users is empty, try raw.githubusercontent in case of stale Pages cache
+        }
+    } catch (_) { }
+
+    // 2) raw.githubusercontent.com fallback
     const owner = cfg.repoOwner;
     const repo = cfg.repoName;
     if (owner && repo) {
-        const url = `https://raw.githubusercontent.com/${owner}/${repo}/main/data/scores.json?t=${Date.now()}`;
-        const res = await fetch(url);
-        if (res.ok) return res.json();
+        try {
+            const url = `https://raw.githubusercontent.com/${owner}/${repo}/main/data/scores.json?t=${Date.now()}`;
+            const res = await fetch(url);
+            if (res.ok) return res.json();
+        } catch (_) { }
     }
-    // Fallback: relative path (works when running from the same repo via Pages)
-    const res = await fetch(`data/scores.json?t=${Date.now()}`);
-    if (res.ok) return res.json();
+
+    // 3) Return empty
     return { lastUpdated: '', processedCommentIds: [], users: {} };
 }
 
