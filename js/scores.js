@@ -45,13 +45,25 @@ function applyComments(scores, newComments, pointsPerComment) {
                 avatar: comment.authorProfileImageUrl,
                 points: 0,
                 commentCount: 0,
+                comments: [],
             };
         }
-        scores.users[uid].points += pointsPerComment;
-        scores.users[uid].commentCount += 1;
-        scores.users[uid].name = comment.authorDisplayName;
-        if (comment.authorProfileImageUrl) {
-            scores.users[uid].avatar = comment.authorProfileImageUrl;
+        const u = scores.users[uid];
+        u.points += pointsPerComment;
+        u.commentCount += 1;
+        u.name = comment.authorDisplayName;
+        if (comment.authorProfileImageUrl) u.avatar = comment.authorProfileImageUrl;
+
+        // Store comment history (keep latest 50 per user to limit file size)
+        if (comment.textDisplay) {
+            u.comments = u.comments || [];
+            u.comments.unshift({
+                id: comment.id,
+                text: comment.textDisplay,
+                videoId: comment.videoId || '',
+                date: comment.publishedAt || '',
+            });
+            if (u.comments.length > 50) u.comments = u.comments.slice(0, 50);
         }
         added++;
     }

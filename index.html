@@ -1,69 +1,94 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kahraman Liderlik Tablosu — YouTube Yorum Puanları</title>
-  <meta name="description" content="YouTube kanalı yorum bazlı puan liderlik tablosu. En çok yorum yapan kahramanlar burada gösterilir." />
+  <title id="page-title">Köy Meydanı</title>
+  <meta name="description" content="YouTube kanalı yorum bazlı puan liderlik tablosu." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
   <div class="page-wrapper">
 
-    <!-- ===== HEADER ===== -->
+    <!-- HEADER -->
     <header class="site-header">
-      <div class="header-emblem">⚔️</div>
-      <h1 class="site-title">Kahraman Liderlik Tablosu</h1>
-      <p class="site-subtitle">En Cesur Yorum Savaşçıları</p>
-      <div class="header-divider">
-        <span class="divider-icon">✦</span>
-      </div>
+      <span class="header-emblem" id="txt-emblem">🌿</span>
+      <h1 class="site-title" id="txt-site-title">Köy Meydanı</h1>
+      <p class="site-subtitle" id="txt-site-subtitle">En çok yorum yapanlar burada anılır</p>
+      <div class="header-divider"><span class="divider-icon">✦</span></div>
     </header>
 
-    <!-- ===== STATS BAR ===== -->
+    <!-- STATS -->
     <div class="stats-bar" aria-label="İstatistikler">
       <div class="stat-badge">
-        <span>⚔️ Toplam Yorum:</span>
+        <span id="txt-stat-comments-label">🍃 Toplam Yorum:</span>
         <strong id="stat-comments">—</strong>
       </div>
       <div class="stat-badge">
-        <span>🛡️ Savaşçı Sayısı:</span>
+        <span id="txt-stat-users-label">🏡 Katılımcı Sayısı:</span>
         <strong id="stat-users">—</strong>
       </div>
     </div>
 
-    <!-- ===== LEADERBOARD ===== -->
+    <!-- LEADERBOARD -->
     <main class="leaderboard-board" aria-label="Liderlik Tablosu">
       <div class="board-topbar">
-        <span class="board-topbar-crown">👑</span>
-        <span class="board-topbar-title">En İyi 10 Kahraman</span>
-        <span class="board-topbar-crown">👑</span>
+        <span class="board-topbar-icon">🌲</span>
+        <span class="board-topbar-title" id="txt-board-title">Önde Gelenler</span>
+        <span class="board-topbar-icon">🌲</span>
       </div>
-
       <ul id="leaderboard-list" class="leaderboard-list" aria-live="polite">
         <li class="loading-state">
-          <div class="loading-rune">⚙️</div>
-          <p>Liderlik tablosu yükleniyor…</p>
+          <div class="loading-rune">🍂</div>
+          <p>Yükleniyor…</p>
         </li>
       </ul>
     </main>
 
-    <!-- ===== LAST UPDATE ===== -->
     <p id="last-update" class="last-update"></p>
 
-    <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
-      <p>⚔️ Her yorum +30 Puan · Gerçek savaşçılar yorum yapar ⚔️</p>
+      <p id="txt-footer">Her yorum puan kazandırır · <span id="txt-site-title-footer">Köy Meydanı</span></p>
     </footer>
 
-  </div><!-- /page-wrapper -->
+  </div>
 
-  <!-- Admin shortcut (subtle) -->
-  <a href="admin.html" class="admin-btn" title="Yönetici Paneli">⚙ Yönetici</a>
+  <!-- PROFILE OVERLAY -->
+  <div id="profile-overlay" class="profile-overlay" role="dialog" aria-modal="true" aria-label="Kullanıcı Profili">
+    <div class="profile-panel" id="profile-panel">
+      <div class="profile-header">
+        <div id="profile-avatar-wrap"></div>
+        <div class="profile-info">
+          <div class="profile-name" id="profile-name">—</div>
+          <div class="profile-meta">
+            <div class="profile-stat" id="profile-points-stat">
+              <span id="txt-profile-points-label">Puan:</span>
+              <strong id="profile-points">—</strong>
+            </div>
+            <div class="profile-stat" id="profile-comments-stat">
+              <span id="txt-profile-comments-label">Yorum:</span>
+              <strong id="profile-comment-count">—</strong>
+            </div>
+          </div>
+        </div>
+        <button class="profile-close" id="profile-close-btn" aria-label="Kapat">✕</button>
+      </div>
+      <div class="profile-comments-title" id="txt-comments-title">Yorumlar</div>
+      <div class="profile-comments-list" id="profile-comments-list">
+        <div class="profile-empty" id="txt-profile-empty">Yorum geçmişi bulunamadı.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin shortcut -->
+  <a href="admin.html" class="admin-btn" id="txt-admin-link">⚙ Yönetici</a>
 
   <script src="js/leaderboard.js"></script>
 </body>
+
 </html>

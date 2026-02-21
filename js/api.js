@@ -100,9 +100,12 @@ async function getVideoComments(videoId, apiKey, processedIds, onProgress) {
             const top = item.snippet.topLevelComment.snippet;
             comments.push({
                 id,
+                videoId,
                 authorChannelId: top.authorChannelId?.value || '',
                 authorDisplayName: top.authorDisplayName || 'Anonim',
                 authorProfileImageUrl: top.authorProfileImageUrl || '',
+                textDisplay: (top.textDisplay || top.textOriginal || '').replace(/<[^>]+>/g, ''),
+                publishedAt: top.publishedAt || '',
             });
         }
         pageToken = data.nextPageToken || '';

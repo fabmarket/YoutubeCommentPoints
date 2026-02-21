@@ -1,0 +1,18 @@
+{
+    "siteTitle": "Köy Meydanı",
+    "siteSubtitle": "En çok yorum yapanlar burada anılır",
+    "boardTitle": "Önde Gelenler",
+    "statComments": "Toplam Yorum",
+    "statUsers": "Köylü Sayısı",
+    "emptyTitle": "Henüz kimse yorum yapmamış",
+    "emptySubtitle": "İlk yorum yapan sen ol!",
+    "pointsLabel": "Puan",
+    "commentsLabel": "yorum",
+    "lastUpdatePrefix": "Son güncelleme:",
+    "adminLink": "Yönetici",
+    "profileClose": "Kapat",
+    "profilePointsLabel": "Toplam Puan",
+    "profileCommentsLabel": "Yorum Sayısı",
+    "profileCommentsTitle": "Yorumlar",
+    "profileNoComments": "Yorum geçmişi bulunamadı."
+}
