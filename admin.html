@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yönetici Paneli — YouTube Yorum Puanları</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- ===== LOGIN OVERLAY ===== -->
+    <div id="login-overlay">
+        <div class="page-wrapper" style="justify-content:center;min-height:100vh;">
+            <div class="admin-login-box">
+                <div style="font-size:2.5rem;margin-bottom:.75rem;filter:drop-shadow(0 0 10px rgba(212,160,23,.5))">🏰
+                </div>
+                <h1 class="admin-login-title">Kale Kapısı</h1>
+                <p class="admin-login-subtitle">Yalnızca yetkili kişiler girebilir</p>
+
+                <div id="login-error" class="alert alert-error hidden">Yanlış şifre!</div>
+
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Şifre</label>
+                    <input class="form-input" type="password" id="login-password" autocomplete="current-password"
+                        placeholder="Şifrenizi girin…" />
+                </div>
+                <button class="btn btn-primary btn-full" id="login-btn">Giriş Yap</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ADMIN PANEL (hidden until logged in) ===== -->
+    <div id="admin-panel" class="hidden">
+        <div class="admin-container">
+
+            <div class="admin-panel-header">
+                <div>
+                    <h1 class="admin-panel-title">🏰 Yönetici Paneli</h1>
+                </div>
+                <div style="display:flex;gap:.5rem;align-items:center;">
+                    <a href="index.html" class="btn btn-secondary">← Ana Sayfa</a>
+                    <button class="btn btn-danger" id="logout-btn">Çıkış</button>
+                </div>
+            </div>
+
+            <!-- ===== CREDENTIALS CARD ===== -->
+            <div class="admin-card">
+                <div class="admin-card-title">🔑 API Kimlik Bilgileri</div>
+
+                <div class="form-group">
+                    <label class="form-label" for="api-key">YouTube Data API v3 Anahtarı</label>
+                    <input class="form-input" type="password" id="api-key" placeholder="AIza…" autocomplete="off" />
+                    <p class="token-hint">Google Cloud Console'dan alın → APIs &amp; Services → Credentials → Create API
+                        Key → YouTube Data API v3'ü etkinleştirin.</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="github-pat">GitHub Personal Access Token (PAT)</label>
+                    <input class="form-input" type="password" id="github-pat" placeholder="ghp_…" autocomplete="off" />
+                    <p class="token-hint">GitHub → Settings → Developer settings → Personal access tokens → Fine-grained
+                        → "Contents" read &amp; write izni verin.</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="repo-owner">GitHub Kullanıcı Adı</label>
+                    <input class="form-input" type="text" id="repo-owner" placeholder="kullanici-adiniz"
+                        autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="repo-name">GitHub Repo Adı</label>
+                    <input class="form-input" type="text" id="repo-name" placeholder="YoutubeCommentPoints"
+                        autocomplete="off" />
+                </div>
+
+                <div class="form-group" style="margin-bottom:0">
+                    <label class="form-label" for="admin-password">Admin Şifresini Değiştir</label>
+                    <input class="form-input" type="password" id="admin-password"
+                        placeholder="Yeni şifre (boş bırakırsan değişmez)" autocomplete="new-password" />
+                </div>
+            </div>
+
+            <!-- ===== CHANNEL CARD ===== -->
+            <div class="admin-card">
+                <div class="admin-card-title">📺 YouTube Kanal Ayarları</div>
+
+                <div class="form-group">
+                    <label class="form-label" for="channel-url">Kanal URL veya ID</label>
+                    <input class="form-input" type="text" id="channel-url"
+                        placeholder="https://www.youtube.com/@KanalAdiniz veya UC…" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="points-per-comment">Yorum Başına Puan</label>
+                    <input class="form-input" type="number" id="points-per-comment" value="30" min="1" max="1000" />
+                </div>
+
+                <div class="form-group" style="margin-bottom:0">
+                    <label class="form-label" for="check-interval">Otomatik Kontrol Sıklığı</label>
+                    <select class="form-select" id="check-interval">
+                        <option value="1">Her 1 saatte bir</option>
+                        <option value="2">Her 2 saatte bir</option>
+                        <option value="3">Her 3 saatte bir</option>
+                        <option value="6" selected>Her 6 saatte bir</option>
+                        <option value="12">Her 12 saatte bir</option>
+                        <option value="24">Her 24 saatte bir</option>
+                    </select>
+                    <p class="token-hint">Not: Tarayıcı sekmesi açık olmadığında otomatik kontrol çalışmaz. GitHub
+                        Actions ile 7/24 otomasyon için README'ye bakın.</p>
+                </div>
+            </div>
+
+            <!-- ===== ACTIONS CARD ===== -->
+            <div class="admin-card">
+                <div class="admin-card-title">⚡ İşlemler</div>
+
+                <div class="admin-actions">
+                    <button class="btn btn-primary" id="save-btn">💾 Ayarları Kaydet</button>
+                    <button class="btn btn-primary" id="check-btn">🔍 Yorumları Şimdi Kontrol Et</button>
+                    <button class="btn btn-secondary" id="scheduler-btn">▶ Otomatik Kontrolü Başlat</button>
+                </div>
+
+                <div class="scheduler-status" id="scheduler-status">
+                    <span class="dot-inactive">●</span>
+                    <span id="scheduler-status-text">Zamanlayıcı durduruldu</span>
+                </div>
+
+                <!-- Progress bar -->
+                <div class="progress-bar-bg hidden" id="progress-bg">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+
+                <!-- Log output -->
+                <div class="status-log" id="status-log" style="margin-top:1rem;">
+                    <div class="log-entry log-info">Hoş geldiniz. Ayarları girin ve işlem başlatın.</div>
+                </div>
+            </div>
+
+            <!-- ===== LEADERBOARD PREVIEW ===== -->
+            <div class="admin-card">
+                <div class="admin-card-title">🏆 Güncel Liderlik Önizlemesi (İlk 10)</div>
+                <div id="admin-preview" style="color:var(--clr-text-dim);font-size:.8rem;font-style:italic;">Ayarları
+                    kaydedip kontrol ettikten sonra burada görünecek.</div>
+            </div>
+
+        </div><!-- /admin-container -->
+    </div><!-- /admin-panel -->
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="js/api.js"></script>
+    <script src="js/scores.js"></script>
+    <script src="js/scheduler.js"></script>
+    <script>
+        // ——————————————————————————————————————————
+        // CONSTANTS
+        // ——————————————————————————————————————————
+        const LS_PREFIX = 'ytcp_';
+        const DEFAULT_PASS = 'kale2024'; // default password, changeable via admin
+
+        const LS_KEY = {
+            SESSION: LS_PREFIX + 'session',
+            API_KEY: LS_PREFIX + 'api_key',
+            PAT: LS_PREFIX + 'pat',
+            OWNER: LS_PREFIX + 'owner',
+            REPO: LS_PREFIX + 'repo',
+            CHANNEL: LS_PREFIX + 'channel',
+            INTERVAL: LS_PREFIX + 'interval_hours',
+            POINTS: LS_PREFIX + 'points_per_comment',
+            PASSWORD: LS_PREFIX + 'admin_password',
+        };
+
+        // ——————————————————————————————————————————
+        // LOGIN
+        // ——————————————————————————————————————————
+        const getPassword = () => localStorage.getItem(LS_KEY.PASSWORD) || DEFAULT_PASS;
+
+        function checkSession() {
+            if (localStorage.getItem(LS_KEY.SESSION) === 'ok') showPanel();
+        }
+
+        document.getElementById('login-btn').addEventListener('click', doLogin);
+        document.getElementById('login-password').addEventListener('keydown', e => {
+            if (e.key === 'Enter') doLogin();
+        });
+
+        function doLogin() {
+            const val = document.getElementById('login-password').value;
+            if (val === getPassword()) {
+                localStorage.setItem(LS_KEY.SESSION, 'ok');
+                document.getElementById('login-error').classList.add('hidden');
+                showPanel();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+                document.getElementById('login-password').value = '';
+            }
+        }
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem(LS_KEY.SESSION);
+            location.reload();
+        });
+
+        function showPanel() {
+            document.getElementById('login-overlay').classList.add('hidden');
+            document.getElementById('admin-panel').classList.remove('hidden');
+            loadFormValues();
+            loadPreview();
+        }
+
+        // ——————————————————————————————————————————
+        // FORM PERSISTENCE
+        // ——————————————————————————————————————————
+        function loadFormValues() {
+            const get = (key, fallback = '') => localStorage.getItem(key) || fallback;
+            document.getElementById('api-key').value = get(LS_KEY.API_KEY);
+            document.getElementById('github-pat').value = get(LS_KEY.PAT);
+            document.getElementById('repo-owner').value = get(LS_KEY.OWNER);
+            document.getElementById('repo-name').value = get(LS_KEY.REPO);
+            document.getElementById('channel-url').value = get(LS_KEY.CHANNEL);
+            document.getElementById('points-per-comment').value = get(LS_KEY.POINTS, '30');
+            document.getElementById('check-interval').value = get(LS_KEY.INTERVAL, '6');
+        }
+
+        document.getElementById('save-btn').addEventListener('click', saveSettings);
+
+        function saveSettings() {
+            localStorage.setItem(LS_KEY.API_KEY, document.getElementById('api-key').value.trim());
+            localStorage.setItem(LS_KEY.PAT, document.getElementById('github-pat').value.trim());
+            localStorage.setItem(LS_KEY.OWNER, document.getElementById('repo-owner').value.trim());
+            localStorage.setItem(LS_KEY.REPO, document.getElementById('repo-name').value.trim());
+            localStorage.setItem(LS_KEY.CHANNEL, document.getElementById('channel-url').value.trim());
+            localStorage.setItem(LS_KEY.INTERVAL, document.getElementById('check-interval').value);
+            localStorage.setItem(LS_KEY.POINTS, document.getElementById('points-per-comment').value);
+
+            const newPass = document.getElementById('admin-password').value;
+            if (newPass) localStorage.setItem(LS_KEY.PASSWORD, newPass);
+
+            // Also update config.json on GitHub (best-effort)
+            updateConfigOnGitHub();
+
+            log('✅ Ayarlar kaydedildi.', 'success');
+        }
+
+        async function updateConfigOnGitHub() {
+            const owner = localStorage.getItem(LS_KEY.OWNER);
+            const repo = localStorage.getItem(LS_KEY.REPO);
+            const pat = localStorage.getItem(LS_KEY.PAT);
+            if (!owner || !repo || !pat) return;
+
+            const config = {
+                channelUrl: localStorage.getItem(LS_KEY.CHANNEL),
+                checkIntervalHours: parseInt(localStorage.getItem(LS_KEY.INTERVAL) || '6', 10),
+                pointsPerComment: parseInt(localStorage.getItem(LS_KEY.POINTS) || '30', 10),
+                repoOwner: owner,
+                repoName: repo,
+            };
+
+            try {
+                await saveFileToGitHub('data/config.json', JSON.stringify(config, null, 2), owner, repo, pat, 'chore: update config');
+            } catch (e) { /* ignore */ }
+        }
+
+        async function saveFileToGitHub(path, content, owner, repo, pat, commitMsg) {
+            const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+            const headers = {
+                'Authorization': `Bearer ${pat}`,
+                'Accept': 'application/vnd.github+json',
+                'X-GitHub-Api-Version': '2022-11-28',
+                'Content-Type': 'application/json',
+            };
+            let sha = null;
+            try {
+                const r = await fetch(apiUrl, { headers });
+                if (r.ok) { const d = await r.json(); sha = d.sha; }
+            } catch (e) { }
+            const body = {
+                message: commitMsg,
+                content: btoa(unescape(encodeURIComponent(content))),
+                ...(sha ? { sha } : {}),
+            };
+            const res = await fetch(apiUrl, { method: 'PUT', headers, body: JSON.stringify(body) });
+            if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
+        }
+
+        // ——————————————————————————————————————————
+        // CHECK COMMENTS
+        // ——————————————————————————————————————————
+        let isChecking = false;
+
+        document.getElementById('check-btn').addEventListener('click', () => runCheck(true));
+
+        async function runCheck(manual = false) {
+            if (isChecking) { log('⚠ Zaten kontrol ediliyor…', 'warn'); return; }
+
+            const apiKey = localStorage.getItem(LS_KEY.API_KEY);
+            const pat = localStorage.getItem(LS_KEY.PAT);
+            const owner = localStorage.getItem(LS_KEY.OWNER);
+            const repo = localStorage.getItem(LS_KEY.REPO);
+            const channel = localStorage.getItem(LS_KEY.CHANNEL);
+            const pts = parseInt(localStorage.getItem(LS_KEY.POINTS) || '30', 10);
+
+            if (!apiKey) { log('❌ Lütfen önce YouTube API Key girin.', 'error'); return; }
+            if (!channel) { log('❌ Lütfen kanal URL\'si girin.', 'error'); return; }
+            if (!pat) { log('❌ Lütfen GitHub PAT girin.', 'error'); return; }
+            if (!owner || !repo) { log('❌ Repo sahibi ve adını girin.', 'error'); return; }
+
+            isChecking = true;
+            setBusy(true);
+            setProgress(0);
+            if (manual) log('🔍 Manuel kontrol başlatıldı…', 'info');
+
+            try {
+                // Load current scores
+                log('📂 Mevcut puanlar yükleniyor…', 'info');
+                const scores = await loadScores(owner, repo);
+                const processedSet = new Set(scores.processedCommentIds || []);
+
+                // Fetch new comments
+                const newComments = await fetchAllNewComments(
+                    channel, apiKey, processedSet,
+                    msg => { log(msg); setProgress(-1); }
+                );
+
+                if (newComments.length === 0) {
+                    log('ℹ️ Yeni yorum bulunamadı.', 'info');
+                } else {
+                    // Apply scores
+                    const { added } = applyComments(scores, newComments, pts);
+                    log(`✨ ${added} yeni yorum işlendi (+${added * pts} toplam puan dağıtıldı)`, 'success');
+
+                    // Save to GitHub
+                    await saveScoresToGitHub(scores, owner, repo, pat, msg => log(msg, 'info'));
+                }
+
+                setProgress(100);
+                markCheckDone();
+                loadPreview(scores);
+
+            } catch (e) {
+                log(`❌ Hata: ${e.message}`, 'error');
+                setProgress(0);
+            } finally {
+                isChecking = false;
+                setBusy(false);
+            }
+        }
+
+        // ——————————————————————————————————————————
+        // SCHEDULER
+        // ——————————————————————————————————————————
+        let schedulerRunning = false;
+
+        document.getElementById('scheduler-btn').addEventListener('click', toggleScheduler);
+
+        function toggleScheduler() {
+            if (schedulerRunning) {
+                stopScheduler();
+                schedulerRunning = false;
+                document.getElementById('scheduler-btn').textContent = '▶ Otomatik Kontrolü Başlat';
+                updateSchedulerStatus(false, 'Zamanlayıcı durduruldu');
+            } else {
+                const hours = parseInt(document.getElementById('check-interval').value, 10);
+                startScheduler(
+                    () => runCheck(false),
+                    hours,
+                    msg => updateSchedulerStatus(true, msg)
+                );
+                schedulerRunning = true;
+                document.getElementById('scheduler-btn').textContent = '⏹ Otomatik Kontrolü Durdur';
+                updateSchedulerStatus(true, `Zamanlayıcı aktif — her ${hours} saatte bir kontrol edilecek`);
+            }
+        }
+
+        function updateSchedulerStatus(active, text) {
+            const dot = document.querySelector('#scheduler-status .dot-active, #scheduler-status .dot-inactive');
+            const txt = document.getElementById('scheduler-status-text');
+            dot.textContent = '●';
+            dot.className = active ? 'dot-active' : 'dot-inactive';
+            txt.textContent = text;
+        }
+
+        // ——————————————————————————————————————————
+        // PREVIEW
+        // ——————————————————————————————————————————
+        async function loadPreview(scoresArg) {
+            const el = document.getElementById('admin-preview');
+            const owner = localStorage.getItem(LS_KEY.OWNER);
+            const repo = localStorage.getItem(LS_KEY.REPO);
+            let scores = scoresArg;
+
+            if (!scores) {
+                try { scores = await loadScores(owner, repo); }
+                catch (e) { el.innerHTML = '<em>Veriler yüklenemedi.</em>'; return; }
+            }
+
+            const users = Object.values(scores.users || {})
+                .sort((a, b) => b.points - a.points)
+                .slice(0, 10);
+
+            if (users.length === 0) {
+                el.innerHTML = '<em>Henüz puan yok.</em>';
+                return;
+            }
+
+            const rows = users.map((u, i) => `
+        <tr>
+          <td style="padding:.35rem .6rem;color:var(--clr-gold);">#${i + 1}</td>
+          <td style="padding:.35rem .6rem;color:var(--clr-text-bright);">${esc(u.name)}</td>
+          <td style="padding:.35rem .6rem;color:var(--clr-gold);text-align:right;font-weight:700;">${(u.points || 0).toLocaleString('tr-TR')}</td>
+          <td style="padding:.35rem .6rem;color:var(--clr-text-dim);text-align:right;">${(u.commentCount || 0)} yorum</td>
+        </tr>`).join('');
+
+            el.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:.8rem;"><tbody>${rows}</tbody></table>`;
+        }
+
+        // ——————————————————————————————————————————
+        // HELPERS
+        // ——————————————————————————————————————————
+        function log(msg, type = '') {
+            const logEl = document.getElementById('status-log');
+            const div = document.createElement('div');
+            div.className = `log-entry ${type ? 'log-' + type : ''}`;
+            const time = new Date().toLocaleTimeString('tr-TR');
+            div.textContent = `[${time}] ${msg}`;
+            logEl.appendChild(div);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function setProgress(pct) {
+            const bg = document.getElementById('progress-bg');
+            const fill = document.getElementById('progress-fill');
+            if (pct < 0) {
+                bg.classList.remove('hidden');
+                fill.style.width = '100%';
+                fill.style.opacity = '0.4';
+                return;
+            }
+            if (pct === 0) { bg.classList.add('hidden'); return; }
+            bg.classList.remove('hidden');
+            fill.style.opacity = '1';
+            fill.style.width = pct + '%';
+        }
+
+        function setBusy(busy) {
+            document.getElementById('check-btn').disabled = busy;
+            document.getElementById('save-btn').disabled = busy;
+        }
+
+        function esc(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // ——————————————————————————————————————————
+        // INIT
+        // ——————————————————————————————————————————
+        checkSession();
+    </script>
+</body>
+
+</html>

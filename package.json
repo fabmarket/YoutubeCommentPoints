@@ -1,0 +1,12 @@
+{
+    "name": "youtube-comment-points",
+    "version": "1.0.0",
+    "description": "YouTube yorum puan liderlik tablosu - GitHub Actions için",
+    "type": "module",
+    "scripts": {
+        "check": "node scripts/check-comments.mjs"
+    },
+    "dependencies": {
+        "node-fetch": "^3.3.2"
+    }
+}

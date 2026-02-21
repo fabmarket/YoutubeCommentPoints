@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kahraman Liderlik Tablosu — YouTube Yorum Puanları</title>
+  <meta name="description" content="YouTube kanalı yorum bazlı puan liderlik tablosu. En çok yorum yapan kahramanlar burada gösterilir." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="page-wrapper">
+
+    <!-- ===== HEADER ===== -->
+    <header class="site-header">
+      <div class="header-emblem">⚔️</div>
+      <h1 class="site-title">Kahraman Liderlik Tablosu</h1>
+      <p class="site-subtitle">En Cesur Yorum Savaşçıları</p>
+      <div class="header-divider">
+        <span class="divider-icon">✦</span>
+      </div>
+    </header>
+
+    <!-- ===== STATS BAR ===== -->
+    <div class="stats-bar" aria-label="İstatistikler">
+      <div class="stat-badge">
+        <span>⚔️ Toplam Yorum:</span>
+        <strong id="stat-comments">—</strong>
+      </div>
+      <div class="stat-badge">
+        <span>🛡️ Savaşçı Sayısı:</span>
+        <strong id="stat-users">—</strong>
+      </div>
+    </div>
+
+    <!-- ===== LEADERBOARD ===== -->
+    <main class="leaderboard-board" aria-label="Liderlik Tablosu">
+      <div class="board-topbar">
+        <span class="board-topbar-crown">👑</span>
+        <span class="board-topbar-title">En İyi 10 Kahraman</span>
+        <span class="board-topbar-crown">👑</span>
+      </div>
+
+      <ul id="leaderboard-list" class="leaderboard-list" aria-live="polite">
+        <li class="loading-state">
+          <div class="loading-rune">⚙️</div>
+          <p>Liderlik tablosu yükleniyor…</p>
+        </li>
+      </ul>
+    </main>
+
+    <!-- ===== LAST UPDATE ===== -->
+    <p id="last-update" class="last-update"></p>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer">
+      <p>⚔️ Her yorum +30 Puan · Gerçek savaşçılar yorum yapar ⚔️</p>
+    </footer>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- Admin shortcut (subtle) -->
+  <a href="admin.html" class="admin-btn" title="Yönetici Paneli">⚙ Yönetici</a>
+
+  <script src="js/leaderboard.js"></script>
+</body>
+</html>
