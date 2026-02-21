@@ -25,8 +25,10 @@ function toBase64Utf8(str) {
 async function loadScores(repoOwner, repoName) {
     const url = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${SCORES_PATH}?t=${Date.now()}`;
     const res = await fetch(url, { mode: 'cors' });
-    if (!res.ok) return { lastUpdated: '', processedCommentIds: [], users: {} };
-    return await res.json();
+    if (!res.ok) return { lastUpdated: '', processedCommentIds: [], bannedUsers: [], users: {} };
+    const data = await res.json();
+    if (!data.bannedUsers) data.bannedUsers = [];
+    return data;
 }
 
 /** Apply new comments to scores object and return updated data */
@@ -39,6 +41,10 @@ function applyComments(scores, newComments, pointsPerComment) {
         processedSet.add(comment.id);
 
         const uid = comment.authorChannelId || comment.authorDisplayName;
+
+        // Skip banned users — mark comment as processed but don't award points
+        if ((scores.bannedUsers || []).includes(uid)) continue;
+
         if (!scores.users[uid]) {
             scores.users[uid] = {
                 name: comment.authorDisplayName,

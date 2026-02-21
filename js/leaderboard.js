@@ -39,19 +39,24 @@ function t(key, fallback = '') {
 }
 
 function applyTexts() {
-    const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
-    set('txt-site-title', t('siteTitle'));
-    set('txt-site-title-footer', t('siteTitle'));
-    set('txt-site-subtitle', t('siteSubtitle'));
-    set('txt-board-title', t('boardTitle'));
-    set('txt-stat-comments-label', (t('statComments') || 'Toplam Yorum') + ':');
-    set('txt-stat-users-label', (t('statUsers') || 'Katılımcı Sayısı') + ':');
-    set('txt-admin-link', '⚙ ' + (t('adminLink') || 'Yönetici'));
-    set('txt-profile-points-label', t('profilePointsLabel') || 'Puan:');
-    set('txt-profile-comments-label', t('profileCommentsLabel') || 'Yorum:');
-    set('txt-comments-title', t('profileCommentsTitle') || 'Yorumlar');
-    set('txt-profile-empty', t('profileNoComments') || 'Yorum geçmişi bulunamadı.');
-    // Update page title
+    const sizes = TEXTS.__sizes || {};
+    const set = (id, val, key) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (val) el.textContent = val;
+        if (key && sizes[key]) el.style.fontSize = sizes[key];
+    };
+    set('txt-site-title', t('siteTitle'), 'siteTitle');
+    set('txt-site-title-footer', t('siteTitle'), null);
+    set('txt-site-subtitle', t('siteSubtitle'), 'siteSubtitle');
+    set('txt-board-title', t('boardTitle'), 'boardTitle');
+    set('txt-stat-comments-label', (t('statComments') || 'Toplam Yorum') + ':', 'statComments');
+    set('txt-stat-users-label', (t('statUsers') || 'Katılımcı Sayısı') + ':', 'statUsers');
+    set('txt-admin-link', '⚙ ' + (t('adminLink') || 'Yönetici'), 'adminLink');
+    set('txt-profile-points-label', t('profilePointsLabel') || 'Puan:', 'profilePointsLabel');
+    set('txt-profile-comments-label', t('profileCommentsLabel') || 'Yorum:', 'profileCommentsLabel');
+    set('txt-comments-title', t('profileCommentsTitle') || 'Yorumlar', 'profileCommentsTitle');
+    set('txt-profile-empty', t('profileNoComments') || 'Yorum geçmişi bulunamadı.', 'profileNoComments');
     if (t('siteTitle')) document.title = t('siteTitle');
 }
 
