@@ -295,6 +295,14 @@
             <div>Toplam Puan: <span class="review-stat-val" id="stat-points">—</span></div>
         </div>
 
+        <!-- Banned Users Panel (Hmm.html specific) -->
+        <div id="banned-mgmt-card" class="admin-card" style="display:none; margin-bottom: 2.5rem;">
+            <div
+                style="font-family:var(--font-title);font-size:0.65rem;letter-spacing:0.15em;color:#d46060;text-transform:uppercase;margin-bottom:0.8rem; border-bottom: 1px solid rgba(212,96,96,0.2); padding-bottom: 0.4rem;">
+                🚫 Yasaklı / Engellenmiş Kullanıcılar</div>
+            <div id="banned-list" style="display:flex;flex-wrap:wrap;gap:0.5rem;"></div>
+        </div>
+
         <!-- Controls -->
         <div class="review-controls">
             <input class="form-input" type="text" id="review-search" placeholder="Kullanıcı veya yorum ara…" />
@@ -341,6 +349,7 @@
 
         // ——— Data ———
         let _allUsers = []; // sorted array of {id, ...userData}
+        let _loadedScores = null; // saved full object for saving
 
         document.getElementById('load-btn').addEventListener('click', loadData);
         document.getElementById('review-search').addEventListener('input', renderBlocks);
@@ -370,9 +379,12 @@
                 );
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const scores = await res.json();
+                _loadedScores = scores;
 
                 _allUsers = Object.entries(scores.users || {})
                     .map(([id, u]) => ({ id, ...u }));
+
+                renderBannedList();
 
                 // Stats
                 const totalComments = _allUsers.reduce((s, u) => s + (u.commentCount || 0), 0);
@@ -507,12 +519,63 @@
             });
         }
 
+        // --- Banned Functions ---
+        function renderBannedList() {
+            if (!_loadedScores) return;
+            const banned = _loadedScores.bannedUsers || [];
+            const card = document.getElementById('banned-mgmt-card');
+            const list = document.getElementById('banned-list');
+
+            if (!banned.length) {
+                card.style.display = 'none';
+                return;
+            }
+
+            card.style.display = 'block';
+            list.innerHTML = banned.map(uid => {
+                const u = _loadedScores.users[uid];
+                const label = u ? u.name : uid;
+                return `
+                <span style="background:rgba(92,26,26,0.3); border:1px solid #8a3030; border-radius:3px; padding:0.25rem 0.6rem; font-size:0.75rem; color:#d46060; display:flex; align-items:center; gap:0.4rem;">
+                  🚫 ${esc(label)}
+                  <button onclick="unbanUser('${esc(uid)}')" style="background:none; border:none; color:#d46060; cursor:pointer; font-size:1.1rem; line-height:1; padding:0;">✕</button>
+                </span>`;
+            }).join('');
+        }
+
+        async function unbanUser(uid) {
+            if (!_loadedScores) return;
+            if (!confirm(`Bu kullanıcının yasağını kaldırmak istiyor musun?`)) return;
+
+            _loadedScores.bannedUsers = (_loadedScores.bannedUsers || []).filter(b => b !== uid);
+            renderBannedList();
+
+            // Save to GitHub
+            const owner = localStorage.getItem(LS_OWNER);
+            const repo = localStorage.getItem(LS_REPO);
+            const pat = localStorage.getItem('ytcp_gh_pat'); // need PAT
+
+            if (!owner || !repo || !pat) {
+                alert('Yasak kaldırıldı ama kaydedilmedi (PAT/Bilgi eksik).');
+                return;
+            }
+
+            try {
+                // We use global function if available or simple fetch
+                await saveScoresToGitHub(_loadedScores, owner, repo, pat, m => console.log(m));
+                alert('Yasak başarıyla kaldırıldı.');
+            } catch (e) {
+                alert('Kaydedilirken hata oluştu: ' + e.message);
+            }
+        }
+
         function esc(str) {
             return String(str)
                 .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
     </script>
+    <script src="js/scores.js"></script>
 </body>
 
 </html>

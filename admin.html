@@ -157,13 +157,6 @@
                     style="max-width:260px;" />
                 <button class="btn btn-secondary" id="load-users-btn">🔄 Kullaniciları Yükle</button>
             </div>
-            <!-- Banned list -->
-            <div id="banned-section" style="margin-bottom:1rem;display:none;">
-                <div
-                    style="font-family:var(--font-title);font-size:0.65rem;letter-spacing:0.15em;color:#d46060;text-transform:uppercase;margin-bottom:0.4rem;">
-                    🚫 Yasaklı Kullanıcılar</div>
-                <div id="banned-list" style="display:flex;flex-wrap:wrap;gap:0.4rem;"></div>
-            </div>
             <div id="user-list-container">
                 <div
                     style="color:var(--clr-text-dim);font-family:var(--font-accent);font-style:italic;font-size:0.85rem;">
@@ -656,7 +649,6 @@
                 if (!_loadedScores.bannedUsers) _loadedScores.bannedUsers = [];
 
                 renderUserList();
-                renderBannedList();
             } catch (e) {
                 container.innerHTML = `<div style="color:#d46060;">Hata: ${e.message}</div>`;
             }
@@ -683,29 +675,13 @@
                   <div style="font-size:0.68rem;color:var(--clr-text-dim);">${u.points.toLocaleString('tr-TR')} puan · ${u.commentCount || 0} yorum</div>
                 </div>
                 <div style="display:flex;gap:0.35rem;">
-                  <button onclick="removeUser('${escHtml(u.id)}')" title="Listeden kaldır" style="background:rgba(92,26,26,0.35);border:1px solid #8a3030;color:#d46060;border-radius:3px;padding:0.25rem 0.5rem;cursor:pointer;font-size:0.8rem;">✕</button>
+                  <button onclick="removeUser('${escHtml(u.id)}')" title="Listeden kaldıir (Sonraki taramada geri gelir)" style="background:rgba(92,26,26,0.35);border:1px solid #8a3030;color:#d46060;border-radius:3px;padding:0.25rem 0.5rem;cursor:pointer;font-size:0.8rem;">✕</button>
                   <button onclick="banUser('${escHtml(u.id)}','${escHtml(u.name)}')" title="Yasakla" style="background:rgba(60,20,60,0.35);border:1px solid #7a3080;color:#c060d0;border-radius:3px;padding:0.25rem 0.5rem;cursor:pointer;font-size:0.8rem;">🚫</button>
                 </div>
               </div>`).join('');
         }
 
-        function renderBannedList() {
-            if (!_loadedScores) return;
-            const banned = _loadedScores.bannedUsers || [];
-            const section = document.getElementById('banned-section');
-            const list = document.getElementById('banned-list');
-            if (!banned.length) { section.style.display = 'none'; return; }
-            section.style.display = 'block';
-            list.innerHTML = banned.map(uid => {
-                // Try to find name from users or just show uid
-                const u = _loadedScores.users[uid];
-                const label = u ? u.name : uid;
-                return `<span style="background:rgba(92,26,26,0.3);border:1px solid #8a3030;border-radius:3px;padding:0.2rem 0.5rem;font-size:0.72rem;color:#d46060;display:flex;align-items:center;gap:0.3rem;">
-                  🚫 ${escHtml(label)}
-                  <button onclick="unbanUser('${escHtml(uid)}')" title="Yasağı kaldır" style="background:none;border:none;color:#d46060;cursor:pointer;font-size:0.85rem;padding:0;">✕</button>
-                </span>`;
-            }).join('');
-        }
+        // renderBannedList removed — moved to hmm.html
 
         function filterUserList() {
             const q = document.getElementById('user-search').value;
@@ -715,29 +691,36 @@
         function removeUser(uid) {
             if (!_loadedScores || !_loadedScores.users[uid]) return;
             const name = _loadedScores.users[uid].name;
-            if (!confirm(`"${name}" kullanıcısını listeden kaldırmak istiyor musun? (Puan sıfırlanır)`)) return;
+            if (!confirm(`"${name}" kullanıcısını geçici olarak listeden silmek istiyor musun? (Bi sonraki yorum kontrolünde puanları sıfırdan tekrar hesaplanarak eklenecektir)`)) return;
+
+            // 1. Get all comment IDs for this user
+            const userCommentIds = (_loadedScores.users[uid].comments || []).map(c => c.id);
+
+            // 2. Remove these IDs from processedCommentIds so they can be re-found
+            if (_loadedScores.processedCommentIds) {
+                _loadedScores.processedCommentIds = _loadedScores.processedCommentIds.filter(id => !userCommentIds.includes(id));
+            }
+
+            // 3. Delete user entry
             delete _loadedScores.users[uid];
+
             renderUserList(document.getElementById('user-search').value);
             saveUserChanges();
         }
 
         function banUser(uid, name) {
             if (!_loadedScores) return;
-            if (!confirm(`"${name}" kullanıcısını yasaklamak istiyor musun? (Puan silinir, gelecekte puan kazanamaz)`)) return;
+            if (!confirm(`"${name}" kullanıcısını tamamen yasaklamak istiyor musun? (Listedden silinir ve bi daha puan kazanamaz)`)) return;
+
             delete _loadedScores.users[uid];
             _loadedScores.bannedUsers = _loadedScores.bannedUsers || [];
             if (!_loadedScores.bannedUsers.includes(uid)) _loadedScores.bannedUsers.push(uid);
+
             renderUserList(document.getElementById('user-search').value);
-            renderBannedList();
             saveUserChanges();
         }
 
-        function unbanUser(uid) {
-            if (!_loadedScores) return;
-            _loadedScores.bannedUsers = (_loadedScores.bannedUsers || []).filter(b => b !== uid);
-            renderBannedList();
-            saveUserChanges();
-        }
+        // unbanUser removed — moved to hmm.html
 
         async function saveUserChanges() {
             const owner = localStorage.getItem(LS.OWNER) || '';
