@@ -137,26 +137,6 @@
         }
       ]
     },
-    "UCJMPwa-QAjZyAccU9wFCRuA": {
-      "name": "@emrepalamut7039",
-      "avatar": "https://yt3.ggpht.com/ytc/AIdro_kBfNroK0whH76vP3JqBlVz0G9KH5WcV-BGkewvapy_FlA=s48-c-k-c0x00ffffff-no-rj",
-      "points": 60,
-      "commentCount": 2,
-      "comments": [
-        {
-          "id": "UgzSAw_Gk7Cdx1t-tll4AaABAg",
-          "text": "Vilonyayı çizerken tanıdığım yayıncım aynı ruhla çizim yapıyor❤",
-          "videoId": "87krjxeSF5I",
-          "date": "2026-02-10T19:25:23Z"
-        },
-        {
-          "id": "UgwA0bTPlJjiDT-_p794AaABAg",
-          "text": "Birileri demiş ki öldü şimdi yazsınlar şivilo geri döndü",
-          "videoId": "q6vnGLEiSaM",
-          "date": "2025-12-16T18:21:13Z"
-        }
-      ]
-    },
     "UCeyAu3-aKqI4qML3XYcpgvw": {
       "name": "@HerrErkanSama",
       "avatar": "https://yt3.ggpht.com/ytc/AIdro_kfBWzgfHn_NOhyxXs3rKlvQuHZKqfA1ZMrxZMUGQkjW8Dqu0CswMyWj8F3pmGfexqucg=s48-c-k-c0x00ffffff-no-rj",
@@ -785,5 +765,6 @@
         }
       ]
     }
-  }
+  },
+  "bannedUsers": []
 }
