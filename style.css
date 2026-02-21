@@ -92,12 +92,12 @@ body::before {
   pointer-events: none;
 }
 
-/* Dark uniform overlay — gives the whole page near-black transparency */
+/* Near-black glass overlay — almost solid black, subtle texture through */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
-  background: rgba(4, 3, 2, 0.50);
+  background: rgba(0, 0, 0, 0.86);
   z-index: 1;
   pointer-events: none;
 }
@@ -684,16 +684,19 @@ body::after {
 .profile-stat {
   font-family: var(--font-accent);
   font-style: italic;
-  font-size: 0.82rem;
+  font-size: 1rem;
   color: var(--clr-text-dim);
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.4rem;
 }
 
 .profile-stat strong {
   color: var(--clr-gold);
   font-style: normal;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(200, 151, 42, 0.65), 0 0 25px rgba(200, 151, 42, 0.30);
 }
 
 .profile-close {
