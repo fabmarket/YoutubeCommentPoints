@@ -85,16 +85,14 @@ async function initLeaderboard() {
         showError(container, e.message);
     }
 
-    // Auto-refresh every 5 minutes
+    // Auto-refresh every 60 seconds so deletions/bans appear quickly
     setInterval(async () => {
         try {
             const cfg = await loadConfig();
             const scores = await fetchScores(cfg);
-            localStorage.setItem(LS_SCORES_CACHE, JSON.stringify(scores));
-            localStorage.setItem(LS_CACHE_TIME, Date.now().toString());
             renderLeaderboard(scores, container, lastUpdateEl, statCommentEl, statUsersEl);
         } catch (_) { }
-    }, CACHE_TTL_MS);
+    }, 60_000);
 }
 
 async function loadConfig() {
@@ -105,26 +103,31 @@ async function loadConfig() {
 }
 
 async function fetchScores(cfg) {
-    // 1) Same-origin relative path — always fresh on GitHub Pages
-    try {
-        const res = await fetch(`data/scores.json?t=${Date.now()}`);
-        if (res.ok) {
-            const data = await res.json();
-            if (data && Object.keys(data.users || {}).length > 0) return data;
-        }
-    } catch (_) { }
+    const noCache = { mode: 'cors', cache: 'no-store' };
 
-    // 2) raw.githubusercontent.com fallback
+    // 1) raw.githubusercontent.com — no CDN delay, updates within ~30s of a push
     const { repoOwner: owner, repoName: repo } = cfg;
     if (owner && repo) {
         try {
             const url = `https://raw.githubusercontent.com/${owner}/${repo}/main/data/scores.json?t=${Date.now()}`;
-            const res = await fetch(url);
-            if (res.ok) return res.json();
+            const res = await fetch(url, noCache);
+            if (res.ok) {
+                const data = await res.json();
+                if (data && typeof data.users === 'object') return data;
+            }
         } catch (_) { }
     }
 
-    return { lastUpdated: '', processedCommentIds: [], users: {} };
+    // 2) Relative path fallback (same-origin GitHub Pages)
+    try {
+        const res = await fetch(`data/scores.json?t=${Date.now()}`, { cache: 'no-store' });
+        if (res.ok) {
+            const data = await res.json();
+            if (data && typeof data.users === 'object') return data;
+        }
+    } catch (_) { }
+
+    return { lastUpdated: '', processedCommentIds: [], bannedUsers: [], users: {} };
 }
 
 // ——— Render ———
