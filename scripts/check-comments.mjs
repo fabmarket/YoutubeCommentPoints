@@ -41,9 +41,11 @@ if (!CHANNEL_URL) {
 }
 
 // ——— Load scores ———
-let scores = { lastUpdated: '', processedCommentIds: [], users: {} };
+let scores = { lastUpdated: '', processedCommentIds: [], bannedUsers: [], users: {} };
 try {
     scores = JSON.parse(readFileSync(resolve(ROOT, 'data/scores.json'), 'utf8'));
+    if (!scores.bannedUsers) scores.bannedUsers = [];
+    if (!scores.users) scores.users = {};
 } catch (e) { console.warn('⚠ scores.json okunamadı, sıfırdan başlanıyor.'); }
 
 const processedSet = new Set(scores.processedCommentIds || []);
@@ -118,6 +120,9 @@ async function getVideoComments(videoId) {
                 authorChannelId: top.authorChannelId?.value || '',
                 authorDisplayName: top.authorDisplayName || 'Anonim',
                 authorProfileImageUrl: top.authorProfileImageUrl || '',
+                textDisplay: top.textDisplay || '',
+                videoId: top.videoId || videoId,
+                publishedAt: top.publishedAt || ''
             });
         }
         pageToken = d.nextPageToken || '';
@@ -142,15 +147,34 @@ async function getVideoComments(videoId) {
             try {
                 const comments = await getVideoComments(videoIds[i]);
                 for (const c of comments) {
+                    if (processedSet.has(c.id)) continue;
                     processedSet.add(c.id);
+
                     const uid = c.authorChannelId || c.authorDisplayName;
+
+                    // Skip banned users — mark comment as processed but don't award points
+                    if ((scores.bannedUsers || []).includes(uid)) continue;
+
                     if (!scores.users[uid]) {
-                        scores.users[uid] = { name: c.authorDisplayName, avatar: c.authorProfileImageUrl, points: 0, commentCount: 0 };
+                        scores.users[uid] = { name: c.authorDisplayName, avatar: c.authorProfileImageUrl, points: 0, commentCount: 0, comments: [] };
                     }
-                    scores.users[uid].points += POINTS_COMMENT;
-                    scores.users[uid].commentCount += 1;
-                    scores.users[uid].name = c.authorDisplayName;
-                    if (c.authorProfileImageUrl) scores.users[uid].avatar = c.authorProfileImageUrl;
+                    const u = scores.users[uid];
+                    u.points += POINTS_COMMENT;
+                    u.commentCount += 1;
+                    u.name = c.authorDisplayName;
+                    if (c.authorProfileImageUrl) u.avatar = c.authorProfileImageUrl;
+
+                    // Store comment history (keep latest 50 per user)
+                    if (c.textDisplay) {
+                        u.comments = u.comments || [];
+                        u.comments.unshift({
+                            id: c.id,
+                            text: c.textDisplay,
+                            videoId: c.videoId || '',
+                            date: c.publishedAt || '',
+                        });
+                        if (u.comments.length > 50) u.comments = u.comments.slice(0, 50);
+                    }
                     totalNew++;
                 }
             } catch (e) {
