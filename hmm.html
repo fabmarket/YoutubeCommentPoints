@@ -719,17 +719,20 @@
             const list = document.getElementById('new-comments-list');
             const countEl = document.getElementById('new-comments-count');
 
+            // Always show the panel
+            card.style.display = 'block';
+
             if (!newComments || !newComments.length) {
-                card.style.display = 'none';
+                countEl.textContent = '';
+                list.innerHTML = '<div class="nc-empty">Son taramada yeni yorum bulunamadı. GitHub Actions çalıştığında burada görünecek.</div>';
                 return;
             }
 
-            card.style.display = 'block';
             countEl.textContent = newComments.length + ' yorum';
 
             list.innerHTML = newComments.map((c, idx) => {
                 const avatarHtml = c.authorAvatar
-                    ? `<img class="nc-avatar" src="${esc(c.authorAvatar)}" alt="${esc(c.authorName)}" loading="lazy" onerror="this.outerHTML='<div class=\'nc-avatar-placeholder\'>${esc((c.authorName || '?').charAt(0))}</div>'">`
+                    ? `<img class="nc-avatar" src="${esc(c.authorAvatar)}" alt="${esc(c.authorName)}" loading="lazy" onerror="this.outerHTML='<div class=\\'nc-avatar-placeholder\\'>${esc((c.authorName || '?').charAt(0))}</div>'">`
                     : `<div class="nc-avatar-placeholder">${esc((c.authorName || '?').charAt(0))}</div>`;
 
                 const dateStr = c.date
