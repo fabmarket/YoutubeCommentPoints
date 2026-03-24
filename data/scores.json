@@ -306,12 +306,6 @@
       "commentCount": 8,
       "comments": [
         {
-          "id": "UgzSg7vu1JtXjcL5hDx4AaABAg",
-          "text": "Çok güzel çalmışsın😊",
-          "videoId": "TWINVwDxcOo",
-          "date": "2024-01-02T21:58:25Z"
-        },
-        {
           "id": "UgwA6zkbLKzvbxWJbQh4AaABAg",
           "text": "Bir masalın içindeyiz; resimler birer hikaye anlatıcı schvilo bizi bir hikayeye sürüklüyor. Sonunda büyük bir hikaye tamamlanacak gibi hissediyorum. Bu arada çizim ve videonun akışı içindeki müzik harika olmuş bir saat olsa izlerdim.",
           "videoId": "87krjxeSF5I",
@@ -352,6 +346,12 @@
           "text": "Schvilo is back! Hem de öyle bir back ki aradığım motivasyon bu işte iyi ki attın bu videoyu 🙏👏",
           "videoId": "q6vnGLEiSaM",
           "date": "2025-12-16T16:30:23Z"
+        },
+        {
+          "id": "UgzSg7vu1JtXjcL5hDx4AaABAg",
+          "text": "Çok güzel çalmışsın😊",
+          "videoId": "TWINVwDxcOo",
+          "date": "2024-01-02T21:58:25Z"
         }
       ]
     },
@@ -572,14 +572,7 @@
       "avatar": "https://yt3.ggpht.com/vV14G6KlBNfsTS8cxQJKfPaSSeUS_mYVGuHXDw6KoqY0cOg4NzDJq3RVK2zs-WR_8cEp32xACg=s48-c-k-c0x00ffffff-no-rj",
       "points": 30,
       "commentCount": 1,
-      "comments": [
-        {
-          "id": "Ugwtmb6H-rcY_BTuPUB4AaABAg",
-          "text": "Art Deco, Fütüristik ve Erken 1920&#39;lerin İtalyan Faşist estetiğine sahip evler hep daha çok hoşuma gitmiştir. O keskin hatlar, canlı ve sert renkler ve en önemlisi hem geleneksel hemde yenilikçi mimari ve dekorasyon. Peri masallarından fırlama evleri nedense hep bayıcı bulmuşumdur.Sonraki videonda Art Deco dener misin?",
-          "videoId": "0ax2tEymVdU",
-          "date": "2026-01-21T10:37:47Z"
-        }
-      ]
+      "comments": []
     },
     "UC-j0bjemqT85a7gbONn_7DA": {
       "name": "@Life0Craft",
@@ -1086,16 +1079,16 @@
       "commentCount": 2,
       "comments": [
         {
-          "id": "Ugh02JNfqnQ6HngCoAEC",
-          "text": "Harikasınız.",
-          "videoId": "TWINVwDxcOo",
-          "date": "2017-06-27T00:50:04Z"
-        },
-        {
           "id": "UgjcvotDABE8tngCoAEC",
           "text": "Lütfen daha fazla video atın.",
           "videoId": "9tPwRNDcHXU",
           "date": "2017-07-14T17:34:34Z"
+        },
+        {
+          "id": "Ugh02JNfqnQ6HngCoAEC",
+          "text": "Harikasınız.",
+          "videoId": "TWINVwDxcOo",
+          "date": "2017-06-27T00:50:04Z"
         }
       ]
     },
