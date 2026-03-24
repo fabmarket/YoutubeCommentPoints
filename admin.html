@@ -380,6 +380,15 @@
                 const totalPoints = added * points;
                 log(`✨ ${added} yeni yorum işlendi (+${totalPoints} toplam puan dağıtıldı)`);
 
+                // Log each new comment inline
+                if (allComments.length > 0) {
+                    log('── Bulunan yorumlar ──', 'info');
+                    allComments.forEach(c => {
+                        const snippet = (c.textDisplay || '').slice(0, 80) + ((c.textDisplay || '').length > 80 ? '…' : '');
+                        log(`💬 ${c.authorDisplayName}: ${snippet}`, 'success');
+                    });
+                }
+
                 await saveScoresToGitHub(updated, owner, repo, pat, m => log(m));
                 progress(100);
 

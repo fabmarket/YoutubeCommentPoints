@@ -522,7 +522,7 @@
                     .map(([id, u]) => ({ id, ...u }));
 
                 renderBannedList();
-                renderNewComments(scores.newComments || []);
+                renderNewComments(scores);
 
                 // Stats
                 const totalComments = _allUsers.reduce((s, u) => s + (u.commentCount || 0), 0);
@@ -714,26 +714,45 @@
         }
 
         // ——— New Comments Panel ———
-        function renderNewComments(newComments) {
+        function renderNewComments(scores) {
             const card = document.getElementById('new-comments-card');
             const list = document.getElementById('new-comments-list');
             const countEl = document.getElementById('new-comments-count');
 
-            // Always show the panel
             card.style.display = 'block';
 
-            if (!newComments || !newComments.length) {
+            // Collect all comments from every user, annotate with user info
+            const all = [];
+            Object.entries(scores.users || {}).forEach(([uid, u]) => {
+                (u.comments || []).forEach(c => {
+                    all.push({
+                        authorName: u.name || 'Anonim',
+                        authorAvatar: u.avatar || '',
+                        text: c.text || '',
+                        videoId: c.videoId || '',
+                        date: c.date || '',
+                        commentId: c.id || '',
+                    });
+                });
+            });
+
+            // Sort by date descending, take last 5
+            all.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const top5 = all.slice(0, 5);
+
+            if (!top5.length) {
                 countEl.textContent = '';
-                list.innerHTML = '<div class="nc-empty">Son taramada yeni yorum bulunamadı. GitHub Actions çalıştığında burada görünecek.</div>';
+                list.innerHTML = '<div class="nc-empty">Henüz yorum kaydı bulunamadı.</div>';
                 return;
             }
 
-            countEl.textContent = newComments.length + ' yorum';
+            countEl.textContent = 'Son ' + top5.length + ' yorum';
 
-            list.innerHTML = newComments.map((c, idx) => {
+            list.innerHTML = top5.map((c, idx) => {
+                const initial = (c.authorName || '?').charAt(0);
                 const avatarHtml = c.authorAvatar
-                    ? `<img class="nc-avatar" src="${esc(c.authorAvatar)}" alt="${esc(c.authorName)}" loading="lazy" onerror="this.outerHTML='<div class=\\'nc-avatar-placeholder\\'>${esc((c.authorName || '?').charAt(0))}</div>'">`
-                    : `<div class="nc-avatar-placeholder">${esc((c.authorName || '?').charAt(0))}</div>`;
+                    ? `<img class="nc-avatar" src="${esc(c.authorAvatar)}" alt="${esc(c.authorName)}" loading="lazy" onerror="this.outerHTML='<div class=\\'nc-avatar-placeholder\\'>${esc(initial)}</div>'">`
+                    : `<div class="nc-avatar-placeholder">${esc(initial)}</div>`;
 
                 const dateStr = c.date
                     ? new Date(c.date).toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric' })
@@ -746,7 +765,7 @@
                 return `<div class="new-comment-row" style="animation-delay:${idx * 0.04}s">
                     ${avatarHtml}
                     <div class="nc-body">
-                        <div class="nc-author">${esc(c.authorName || 'Anonim')}</div>
+                        <div class="nc-author">${esc(c.authorName)}</div>
                         <div class="nc-text">${esc(c.text || '—')}</div>
                     </div>
                     <div class="nc-meta">
