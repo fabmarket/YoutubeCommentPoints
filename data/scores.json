@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-11T14:20:53.469Z",
+  "lastUpdated": "2026-03-24T01:12:07.614Z",
   "processedCommentIds": [
     "Ugxxv3beo9Ean1uw-IF4AaABAg",
     "Ugzuz905V9aXUplWroJ4AaABAg",
@@ -122,7 +122,8 @@
     "Ugh02JNfqnQ6HngCoAEC",
     "Ughw41LkX_79RHgCoAEC",
     "UgjFpM2DJUzLeHgCoAEC",
-    "UggNdQNuIZsPXHgCoAEC"
+    "UggNdQNuIZsPXHgCoAEC",
+    "UgwM1FvE8H3b6tWbXqB4AaABAg"
   ],
   "users": {
     "UCyqH6HVfeZtIZO2B0IwAPPA": {
@@ -1418,6 +1419,20 @@
           "text": "brrravo :)",
           "videoId": "TWINVwDxcOo",
           "date": "2017-06-16T13:39:53Z"
+        }
+      ]
+    },
+    "UCaC4NyqFTY8cuNFmClAlOIg": {
+      "name": "@mericvebaco",
+      "avatar": "https://yt3.ggpht.com/ytc/AIdro_knwFxnP7FT4COc6DkJKVVuy-wLP2mdcqF4IsqalvS_h8A=s48-c-k-c0x00ffffff-no-rj",
+      "points": 30,
+      "commentCount": 1,
+      "comments": [
+        {
+          "id": "UgwM1FvE8H3b6tWbXqB4AaABAg",
+          "text": "Amazon yorumlarından buraya doğru bilinç akışı..",
+          "videoId": "0ax2tEymVdU",
+          "date": "2026-03-23T10:04:35Z"
         }
       ]
     }
