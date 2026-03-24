@@ -249,6 +249,132 @@
             font-size: 0.75rem;
             padding: 0.4rem 0.6rem;
         }
+
+        /* ——— Latest Comments Panel ——— */
+        .new-comments-card {
+            background: var(--clr-stone);
+            border: 1px solid var(--clr-border);
+            border-radius: 5px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .new-comments-card-title {
+            font-family: var(--font-title);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            color: var(--clr-leaf-light);
+            text-transform: uppercase;
+            padding: 0.8rem 1.2rem;
+            border-bottom: 1px solid var(--clr-border);
+            background: linear-gradient(135deg, rgba(35, 80, 24, 0.2) 0%, transparent 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .new-comments-card-title span {
+            color: var(--clr-gold);
+            font-size: 0.8rem;
+        }
+
+        .new-comment-row {
+            display: grid;
+            grid-template-columns: 36px 1fr auto;
+            gap: 0.8rem;
+            align-items: start;
+            padding: 0.85rem 1.2rem;
+            border-bottom: 1px solid rgba(74, 62, 40, 0.2);
+            animation: fadeUp 0.3s ease both;
+        }
+
+        .new-comment-row:last-child {
+            border-bottom: none;
+        }
+
+        .nc-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--clr-border);
+        }
+
+        .nc-avatar-placeholder {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--clr-forest), var(--clr-stone-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-title);
+            font-size: 0.8rem;
+            color: var(--clr-leaf-light);
+            font-weight: 700;
+        }
+
+        .nc-body {
+            min-width: 0;
+        }
+
+        .nc-author {
+            font-family: var(--font-title);
+            font-size: 0.82rem;
+            color: var(--clr-parchment);
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nc-text {
+            font-family: var(--font-accent);
+            font-size: 0.84rem;
+            color: var(--clr-text);
+            line-height: 1.6;
+            word-break: break-word;
+        }
+
+        .nc-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.3rem;
+            flex-shrink: 0;
+        }
+
+        .nc-date {
+            font-size: 0.63rem;
+            color: var(--clr-text-dim);
+            white-space: nowrap;
+        }
+
+        .nc-link {
+            font-size: 0.65rem;
+            color: var(--clr-leaf-light);
+            text-decoration: none;
+            white-space: nowrap;
+            padding: 0.15rem 0.4rem;
+            border: 1px solid rgba(90, 128, 64, 0.35);
+            border-radius: 2px;
+            transition: all var(--transition);
+        }
+
+        .nc-link:hover {
+            background: rgba(90, 128, 64, 0.15);
+            color: var(--clr-leaf);
+        }
+
+        .nc-empty {
+            padding: 1.2rem 1.4rem;
+            font-family: var(--font-accent);
+            font-style: italic;
+            font-size: 0.82rem;
+            color: var(--clr-text-dim);
+        }
     </style>
 </head>
 
@@ -293,6 +419,17 @@
             <div>Toplam Kullanıcı: <span class="review-stat-val" id="stat-users">—</span></div>
             <div>Toplam Yorum: <span class="review-stat-val" id="stat-comments">—</span></div>
             <div>Toplam Puan: <span class="review-stat-val" id="stat-points">—</span></div>
+        </div>
+
+        <!-- ===== EN SON YAPILAN YORUMLAR ===== -->
+        <div id="new-comments-card" class="new-comments-card" style="display:none;">
+            <div class="new-comments-card-title">
+                🆕 En Son Yapılan Yorumlar
+                <span id="new-comments-count"></span>
+            </div>
+            <div id="new-comments-list">
+                <div class="nc-empty">Son taramada yeni yorum bulunamadı.</div>
+            </div>
         </div>
 
         <!-- Banned Users Panel (Hmm.html specific) -->
@@ -385,6 +522,7 @@
                     .map(([id, u]) => ({ id, ...u }));
 
                 renderBannedList();
+                renderNewComments(scores.newComments || []);
 
                 // Stats
                 const totalComments = _allUsers.reduce((s, u) => s + (u.commentCount || 0), 0);
@@ -573,6 +711,47 @@
             return String(str)
                 .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        // ——— New Comments Panel ———
+        function renderNewComments(newComments) {
+            const card = document.getElementById('new-comments-card');
+            const list = document.getElementById('new-comments-list');
+            const countEl = document.getElementById('new-comments-count');
+
+            if (!newComments || !newComments.length) {
+                card.style.display = 'none';
+                return;
+            }
+
+            card.style.display = 'block';
+            countEl.textContent = newComments.length + ' yorum';
+
+            list.innerHTML = newComments.map((c, idx) => {
+                const avatarHtml = c.authorAvatar
+                    ? `<img class="nc-avatar" src="${esc(c.authorAvatar)}" alt="${esc(c.authorName)}" loading="lazy" onerror="this.outerHTML='<div class=\'nc-avatar-placeholder\'>${esc((c.authorName || '?').charAt(0))}</div>'">`
+                    : `<div class="nc-avatar-placeholder">${esc((c.authorName || '?').charAt(0))}</div>`;
+
+                const dateStr = c.date
+                    ? new Date(c.date).toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric' })
+                    : '';
+
+                const videoLink = c.videoId
+                    ? `<a class="nc-link" href="https://www.youtube.com/watch?v=${esc(c.videoId)}${c.commentId ? '&lc=' + esc(c.commentId) : ''}" target="_blank" rel="noopener">📺 Git</a>`
+                    : '';
+
+                return `<div class="new-comment-row" style="animation-delay:${idx * 0.04}s">
+                    ${avatarHtml}
+                    <div class="nc-body">
+                        <div class="nc-author">${esc(c.authorName || 'Anonim')}</div>
+                        <div class="nc-text">${esc(c.text || '—')}</div>
+                    </div>
+                    <div class="nc-meta">
+                        ${dateStr ? `<span class="nc-date">📅 ${dateStr}</span>` : ''}
+                        ${videoLink}
+                    </div>
+                </div>`;
+            }).join('');
         }
     </script>
     <script src="js/scores.js"></script>

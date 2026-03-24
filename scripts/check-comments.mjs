@@ -142,6 +142,7 @@ async function getVideoComments(videoId) {
         console.log(`📹 ${videoIds.length} video bulundu.`);
 
         let totalNew = 0;
+        scores.newComments = []; // reset each run — will hold comments found this scan
         for (let i = 0; i < videoIds.length; i++) {
             console.log(`  Video ${i + 1}/${videoIds.length} işleniyor…`);
             try {
@@ -175,6 +176,17 @@ async function getVideoComments(videoId) {
                         });
                         if (u.comments.length > 50) u.comments = u.comments.slice(0, 50);
                     }
+
+                    // Track as newly found comment for the latest-comments panel
+                    scores.newComments.push({
+                        authorName: c.authorDisplayName,
+                        authorAvatar: c.authorProfileImageUrl || '',
+                        text: c.textDisplay || '',
+                        videoId: c.videoId || '',
+                        date: c.publishedAt || '',
+                        commentId: c.id,
+                    });
+
                     totalNew++;
                 }
             } catch (e) {
@@ -184,6 +196,11 @@ async function getVideoComments(videoId) {
 
         scores.processedCommentIds = Array.from(processedSet);
         scores.lastUpdated = new Date().toISOString();
+
+        // Trim newComments to latest 50
+        if (scores.newComments && scores.newComments.length > 50) {
+            scores.newComments = scores.newComments.slice(0, 50);
+        }
 
         writeFileSync(resolve(ROOT, 'data/scores.json'), JSON.stringify(scores, null, 2), 'utf8');
         console.log(`✅ Bitti! ${totalNew} yeni yorum işlendi. scores.json güncellendi.`);
